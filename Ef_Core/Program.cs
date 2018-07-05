@@ -10,10 +10,10 @@ namespace Ef_Core
         {
             Console.WriteLine("Iniciando Entity Framework Core !");
 
-            //GravarUsandoEntity();
-            //RecuperarUsandoEntity();
-            //DeletarUsandoEntity();
-            //RecuperarUsandoEntity();
+            GravarUsandoEntity();
+            RecuperarUsandoEntity();
+            DeletarUsandoEntity();
+            RecuperarUsandoEntity();
             AtualizaUsandoEntity();
             Console.ReadKey();
         }
@@ -40,24 +40,22 @@ namespace Ef_Core
 
         private static void DeletarUsandoEntity()
         {
-            using (var repo = new LojaContext())
+            using (var repo = new ProdutoDAO())
             {
-                var listaProdutos = repo.Produtos.ToList();
+                var listaProdutos = repo.Produtos();
 
                 foreach (var item in listaProdutos)
                 {
-                    repo.Produtos.Remove(item);
+                    repo.Remover(item);
                 }
-
-                repo.SaveChanges();
             }
         }
 
         private static void RecuperarUsandoEntity()
         {
-            using (var repo = new LojaContext())
+            using (var repo = new ProdutoDAO())
             {
-                var produtos = repo.Produtos.ToList();
+                var produtos = repo.Produtos();
                 Console.WriteLine($"Foram encontrados {produtos.Count} produto(s) na base.");
 
                 foreach (var item in produtos)
@@ -76,10 +74,9 @@ namespace Ef_Core
                 Preco = 19.50
             };
 
-            using (var repo = new LojaContext())
+            using (var repo = new ProdutoDAO())
             {
-                repo.Produtos.Add(produto);
-                repo.SaveChanges();
+                repo.Adicionar(produto);
             }
         }
     }
