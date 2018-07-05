@@ -1,15 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Ef_Core
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Iniciando Entity Framework Core !");
 
-            GravarUsandoEntity();
+            //GravarUsandoEntity();
+            RecuperarUsandoEntity();
 
+            Console.ReadKey();
+        }
+
+        private static void RecuperarUsandoEntity()
+        {
+            using (var repo = new LojaContext())
+            {
+                var produtos = repo.Produtos.ToList();
+
+                foreach (var item in produtos)
+                {
+                    Console.WriteLine($"{item.Nome} - {item.Preco}");
+                }
+            }
         }
 
         private static void GravarUsandoEntity()
