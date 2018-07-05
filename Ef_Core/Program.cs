@@ -11,9 +11,46 @@ namespace Ef_Core
             Console.WriteLine("Iniciando Entity Framework Core !");
 
             //GravarUsandoEntity();
+            //RecuperarUsandoEntity();
+            //DeletarUsandoEntity();
+            //RecuperarUsandoEntity();
+            AtualizaUsandoEntity();
+            Console.ReadKey();
+        }
+
+        private static void AtualizaUsandoEntity()
+        {
+            // Incluir Produto.
+            GravarUsandoEntity();
             RecuperarUsandoEntity();
 
-            Console.ReadKey();
+            // Atualizar Produto.
+            using (var repo = new LojaContext())
+            {
+                var primeiroProduto = repo.Produtos.First();
+                primeiroProduto.Nome = "Cassino Royale - Alterado...";
+                primeiroProduto.Preco += 0.50;
+                repo.Produtos.Update(primeiroProduto);
+                repo.SaveChanges();
+            }
+
+            RecuperarUsandoEntity();
+
+        }
+
+        private static void DeletarUsandoEntity()
+        {
+            using (var repo = new LojaContext())
+            {
+                var listaProdutos = repo.Produtos.ToList();
+
+                foreach (var item in listaProdutos)
+                {
+                    repo.Produtos.Remove(item);
+                }
+
+                repo.SaveChanges();
+            }
         }
 
         private static void RecuperarUsandoEntity()
@@ -21,6 +58,7 @@ namespace Ef_Core
             using (var repo = new LojaContext())
             {
                 var produtos = repo.Produtos.ToList();
+                Console.WriteLine($"Foram encontrados {produtos.Count} produto(s) na base.");
 
                 foreach (var item in produtos)
                 {
@@ -43,9 +81,6 @@ namespace Ef_Core
                 repo.Produtos.Add(produto);
                 repo.SaveChanges();
             }
-
-            Console.ReadKey();
-
         }
     }
 }
